@@ -23,9 +23,9 @@ public class MultiMailsender {
    
     /**
       * 以文本格式发送邮件
-      * @param mailInfo 待发送的邮件的信息
+      * @param mailInfo
       */
-        public boolean sendTextMail(MultiMailSenderInfo mailInfo) {
+        public static boolean sendTextMail(MultiMailSenderInfo mailInfo) {
           // 判断是否需要身份认证
           MyAuthenticator authenticator = null;
           Properties pro = mailInfo.getProperties();
@@ -77,7 +77,7 @@ public class MultiMailsender {
         
     /**
      * 发送邮件给多个接收者,以Html内容
-     * @param mailInfo    带发送邮件的信息
+     * @param mailInfo
      * @return
      */
     public static boolean sendMailtoMultiReceiver(MultiMailSenderInfo mailInfo){
@@ -128,7 +128,7 @@ public class MultiMailsender {
    
     /**
      * 发送带抄送的邮件
-     * @param mailInfo    待发送邮件的消息
+     * @param mailInfo
      * @return
      */
     public static boolean sendMailtoMultiCC(MultiMailSenderInfo mailInfo){
@@ -178,12 +178,12 @@ public class MultiMailsender {
     }
    
     /**
-     * 发送多接收者和抄送者类型邮件的基本信息
+     * 发送多接收者和抄送者类型邮件的基本信息实体
      */
     public static class MultiMailSenderInfo extends MailSenderInfo{
-        // 邮件的接收者，可以有多个
+        // 邮件的接收者列表
         private String[] receivers;
-        // 邮件的抄送者，可以有多个
+        // 邮件的抄送者列表
         private String[] ccs;
        
         public String[] getCcs() {
