@@ -25,55 +25,55 @@ public class MultiMailsender {
       * 以文本格式发送邮件
       * @param mailInfo
       */
-        public static boolean sendTextMail(MultiMailSenderInfo mailInfo) {
-          // 判断是否需要身份认证
-          MyAuthenticator authenticator = null;
-          Properties pro = mailInfo.getProperties();
-          if (mailInfo.isValidate()) {
-          // 如果需要身份认证，则创建一个密码验证器
-            authenticator = new MyAuthenticator(mailInfo.getUserName(), mailInfo.getPassword());
+    public static boolean sendTextMail(MultiMailSenderInfo mailInfo) {
+      // 判断是否需要身份认证
+      MyAuthenticator authenticator = null;
+      Properties pro = mailInfo.getProperties();
+      if (mailInfo.isValidate()) {
+      // 如果需要身份认证，则创建一个密码验证器
+        authenticator = new MyAuthenticator(mailInfo.getUserName(), mailInfo.getPassword());
+      }
+      // 根据邮件会话属性和密码验证器构造一个发送邮件的session
+      Session sendMailSession = Session.getDefaultInstance(pro,authenticator);
+      try {
+      // 根据session创建一个邮件消息
+      Message mailMessage = new MimeMessage(sendMailSession);
+      // 创建邮件发送者地址
+      Address from = new InternetAddress(mailInfo.getFromAddress());
+      // 设置邮件消息的发送者
+      mailMessage.setFrom(from);
+      // 创建邮件的接收者地址，并设置到邮件消息中
+      Address[] tos = null;
+      String[] receivers = mailInfo.getReceivers();
+      if (receivers != null){
+          // 为每个邮件接收者创建一个地址
+          tos = new InternetAddress[receivers.length + 1];
+          tos[0] = new InternetAddress(mailInfo.getToAddress());
+          for (int i=0; i<receivers.length; i++){
+              tos[i+1] = new InternetAddress(receivers[i]);
           }
-          // 根据邮件会话属性和密码验证器构造一个发送邮件的session
-          Session sendMailSession = Session.getDefaultInstance(pro,authenticator);
-          try {
-          // 根据session创建一个邮件消息
-          Message mailMessage = new MimeMessage(sendMailSession);
-          // 创建邮件发送者地址
-          Address from = new InternetAddress(mailInfo.getFromAddress());
-          // 设置邮件消息的发送者
-          mailMessage.setFrom(from);
-          // 创建邮件的接收者地址，并设置到邮件消息中
-          Address[] tos = null;
-          String[] receivers = mailInfo.getReceivers();
-          if (receivers != null){
-              // 为每个邮件接收者创建一个地址
-              tos = new InternetAddress[receivers.length + 1];
-              tos[0] = new InternetAddress(mailInfo.getToAddress());
-              for (int i=0; i<receivers.length; i++){
-                  tos[i+1] = new InternetAddress(receivers[i]);
-              }
-          } else {
-              tos = new InternetAddress[1];
-              tos[0] = new InternetAddress(mailInfo.getToAddress());
-          }
+      } else {
+          tos = new InternetAddress[1];
+          tos[0] = new InternetAddress(mailInfo.getToAddress());
+      }
 
-          // Message.RecipientType.TO属性表示接收者的类型为TO
-          mailMessage.setRecipients(Message.RecipientType.TO,tos);
-          // 设置邮件消息的主题
-          mailMessage.setSubject(mailInfo.getSubject());
-          // 设置邮件消息发送的时间
-          mailMessage.setSentDate(new Date());
-          // 设置邮件消息的主要内容
-          String mailContent = mailInfo.getContent();
-          mailMessage.setText(mailContent);
-          // 发送邮件
-          Transport.send(mailMessage);
-          return true;
-          } catch (MessagingException ex) {
-              ex.printStackTrace();
-          }
-          return false;
-        }
+      // Message.RecipientType.TO属性表示接收者的类型为TO
+      mailMessage.setRecipients(Message.RecipientType.TO,tos);
+      // 设置邮件消息的主题
+      mailMessage.setSubject(mailInfo.getSubject());
+      // 设置邮件消息发送的时间
+      mailMessage.setSentDate(new Date());
+      // 设置邮件消息的主要内容
+      String mailContent = mailInfo.getContent();
+      mailMessage.setText(mailContent);
+      // 发送邮件
+      Transport.send(mailMessage);
+      return true;
+      } catch (MessagingException ex) {
+          ex.printStackTrace();
+      }
+      return false;
+    }
         
     /**
      * 发送邮件给多个接收者,以Html内容
@@ -108,7 +108,7 @@ public class MultiMailsender {
             }
             // 将所有接收者地址都添加到邮件接收者属性中
             mailMessage.setRecipients(Message.RecipientType.TO, tos);
-           
+
             mailMessage.setSubject(mailInfo.getSubject());
             mailMessage.setSentDate(new Date());
             // 设置邮件内容

@@ -1,10 +1,11 @@
 package com.kk.sendemaildemo;
 
-/**
-* 发件人基本信息实体类
-*/
 import java.util.Properties;
 
+
+/**
+ * 发件人基本信息实体类
+ */
 public class MailSenderInfo {
 	 // 发送邮件的服务器的IP和端口
 	 private String mailServerHost;

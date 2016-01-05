@@ -17,6 +17,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button sendBt = (Button) findViewById(R.id.main_send_btn);
+
         sendBt.setOnClickListener(new View.OnClickListener() {
 
             @Override
